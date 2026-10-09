@@ -1,0 +1,31 @@
+# @local/dsh-web-fetch-lan —— 让 DSH 的 web_fetch 在 Clash/mihomo fake-ip 下可用
+#
+# 1) 把 web 缝的抓取 provider 固定为本插件（id: http-lan）。
+#    必须显式指定：内置的 web-fetch-http 仍然注册着，若不指定会 WEB_PROVIDER_AMBIGUOUS。
+#    searchProvider 需要一起重述（patch 是整块 config 覆盖）。
+# 2) 插入本插件的条目，并给出 fake-ip 段。
+#
+# 换 fake-ip 段时改这里的 config（改完需要重启 DSH 才生效）：
+#   你在 Clash Verge 里改 `fake-ip-range` / `fake-ip-range6`，就把新段补进来。
+#   列表留空、写成非数组、或全是非法 CIDR 时，插件回退到内置默认段并在日志里告警。
+#   要在 profile 层覆盖（不动本文件），在 ~/.dsh/profiles/desktop/cordis.patch.yml 加：
+#     - id: web-fetch-lan
+#       config:
+#         fakeIpRanges: ['198.18.0.0/15']
+#         fakeIpRanges6: ['2001:2::/64']
+
+- id: web
+  name: '@deepseek-ai/dsh-web'
+  config:
+    searchProvider: deepseek-official
+    fetchProvider: http-lan
+
+- insert:
+    - id: web-fetch-lan
+      name: '@local/dsh-web-fetch-lan'
+      config:
+        fakeIpRanges:
+          - 198.18.0.0/15
+        fakeIpRanges6:
+          - 2001:2::/64
+          - fdfe:dcba:9876::/64
