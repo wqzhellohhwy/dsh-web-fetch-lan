@@ -1,11 +1,12 @@
 {
   "name": "@local/dsh-web-fetch-lan",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "type": "module",
-  "description": "web_fetch provider that tolerates Clash/mihomo fake-ip answers (default 198.18.0.0/15, 2001:2::/64; configurable via config.fakeIpRanges / fakeIpRanges6) while still refusing private and reserved addresses",
+  "description": "让 DeepSeek Harness 的 web_fetch 在 Clash/mihomo TUN + fake-ip 环境下正常工作：放行 fake-ip 段（默认 198.18.0.0/15、2001:2::/64，可用 config.fakeIpRanges / fakeIpRanges6 覆盖），同时继续拒绝回环、私网、链路本地、CGNAT、组播与云元数据地址。A web_fetch provider for DeepSeek Harness that tolerates Clash/mihomo fake-ip answers while still refusing private and reserved addresses.",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "test": "node selftest.mjs"
